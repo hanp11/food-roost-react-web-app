@@ -2,10 +2,11 @@ import {useLocation} from "react-router";
 import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
-  faDrumstickBite,
-  faHouse,
+  faBowlFood,
+  faHouse, faNewspaper,
   faUser
 } from "@fortawesome/free-solid-svg-icons";
+import React from "react";
 
 const NavSidebar = () => {
   const {pathname} = useLocation();
@@ -14,16 +15,24 @@ const NavSidebar = () => {
 
   return (
       <div className="list-group">
-        <a className="list-group-item">
-          <FontAwesomeIcon icon={faDrumstickBite} />
-        </a>
-        <Link to="/" className={`list-group-item ${!active && 'active'}`}>
-          <FontAwesomeIcon icon={faHouse} />
+        <div className="list-group-item">
+          <img alt="food-roost-icon" height={25} src="../..//food-roost-icon.png"/>
+        </div>
+        <Link to="/" className={`list-group-item ${!active && 'active'}`} title="Home">
+          <FontAwesomeIcon icon={faHouse} className='pe-1' />
           <span className="d-none d-xl-inline">Home</span>
         </Link>
-        <Link to="/profile" className={`list-group-item ${active === 'profile' && 'active'}`}>
-          <FontAwesomeIcon icon={faUser} />
+        <Link to="/profile" className={`list-group-item ${active === 'profile' && 'active'}`} title="Profile">
+          <FontAwesomeIcon icon={faUser} className='pe-1' />
           <span className="d-none d-xl-inline">Profile</span>
+        </Link>
+        <Link to="/search" className={`list-group-item ${active === 'recipes' && 'active'}`} title="Recipes">
+          <FontAwesomeIcon icon={faBowlFood} className='pe-1' />
+          <span className="d-none d-xl-inline">Recipes</span>
+        </Link>
+        <Link to="/expert-advice" className={`list-group-item ${active === 'expert-advice' && 'active'}`} title="Expert Advice">
+          <FontAwesomeIcon icon={faNewspaper} className='pe-1' />
+          <span className="d-none d-xl-inline">Expert Advice</span>
         </Link>
       </div>
   );
