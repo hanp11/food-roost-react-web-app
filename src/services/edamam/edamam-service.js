@@ -15,3 +15,13 @@ export const findRecipes = async (queryText) => {
   const response = await axios.get(EDAMAM_API, { params });
   return response.data;
 }
+
+export const findRecipeWithId = async (recipeId) => {
+  const params = {
+    type: APP_TYPE,
+    app_id: APP_ID,
+    app_key: APP_KEY
+  };
+  const response = await axios.get(`${EDAMAM_API}/${recipeId}`, { params });
+  return response.data;
+}

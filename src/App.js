@@ -16,6 +16,11 @@ function App() {
         <div className="col-10 col-md-10 col-lg-7 col-xl-6">
           <Routes>
             <Route index element={<Home/>}/>
+
+            <Route path="/signup" element={<Signup/>}/>
+            <Route path="/login" element={<Login/>}/>
+            <Route path="/profile" element={<Profile/>}/>
+
             <Route path='/search/*' element={<Search/>}/>
             <Route path='/details/:resultId' element={<DetailsComponent/>}/>
           </Routes>

@@ -6,10 +6,14 @@ import reportWebVitals from './reportWebVitals';
 import {configureStore} from "@reduxjs/toolkit";
 import {Provider} from "react-redux";
 import recipesReducer from "./reducers/edamam/recipes-reducer";
+import usersReducer from "./reducers/users-reducer";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const store = configureStore({
-  reducer: {recipesData: recipesReducer}
+  reducer: {
+    recipesData: recipesReducer,
+    users: usersReducer
+  }
 });
 
 root.render(

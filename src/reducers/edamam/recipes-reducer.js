@@ -1,8 +1,9 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {findRecipesThunk} from "../../services/edamam/edamam-thunks";
+import {findRecipesThunk, findRecipeWithIdThunk} from "../../services/edamam/edamam-thunks";
 
 const initialState = {
   recipes: [],
+  currentRecipe: null,
   loading: false
 }
 
@@ -15,11 +16,22 @@ const recipesSlice = createSlice({
       state.recipes = []
     },
     [findRecipesThunk.fulfilled]: (state, { payload }) => {
-      state.loading = true
+      state.loading = false
       state.recipes = payload
     },
     [findRecipesThunk.rejected]: (state) => {
       state.loading = false
+    },
+    [findRecipeWithIdThunk.pending]: (state) => {
+      state.loading = true
+      state.currentRecipe = null
+    },
+    [findRecipeWithIdThunk.fulfilled]: (state, { payload }) => {
+      state.loading = false
+      state.currentRecipe = payload
+    },
+    [findRecipeWithIdThunk.rejected]: (state) => {
+      state.currentRecipe = false
     }
   }
 });

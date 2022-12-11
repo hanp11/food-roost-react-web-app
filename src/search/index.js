@@ -1,5 +1,5 @@
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
+import {faCircle, faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
 import {useDispatch, useSelector} from "react-redux";
 import {findRecipesThunk} from "../services/edamam/edamam-thunks";
 import React, {useEffect, useState} from "react";
@@ -24,7 +24,6 @@ const SearchComponent = () => {
   const recipeSearchHandler = () => {
     navigate(searchText);
   }
-
 
   return (
       <ul className="list-group">
@@ -61,7 +60,7 @@ const SearchComponent = () => {
                   onClick={() => navigate(`/details/${r.uri.match(`(?<=recipe_).*`)}`)}>
                   <div className="row">
                     <div className="col-auto">
-                      <img alt="recipe" className="rounded" height={48} src={r.image}/>
+                      <img alt="recipe" className="rounded" height={70} src={r.image}/>
                     </div>
                     <div className="col">
                       <div className="fw-bold">{r['label']}</div>
@@ -77,16 +76,19 @@ const SearchComponent = () => {
                         </div>
                         <div className="col">
                           <div className="small">
+                            <FontAwesomeIcon icon={faCircle} className="pe-1 text-success"/>
                             <span className="fw-bold">Protein: </span>
                             {Math.round(r['totalNutrients']['PROCNT']['quantity'])}
                             {r['totalNutrients']['PROCNT']['unit']}
                           </div>
                           <div className="small">
+                            <FontAwesomeIcon icon={faCircle} className="pe-1 text-warning"/>
                             <span className="fw-bold">Fat: </span>
                             {Math.round(r['totalNutrients']['FAT']['quantity'])}
                             {r['totalNutrients']['FAT']['unit']}
                           </div>
                           <div className="small">
+                            <FontAwesomeIcon icon={faCircle} className="pe-1 text-danger"/>
                             <span className="fw-bold">Carb: </span>
                             {Math.round(r['totalNutrients']['CHOCDF']['quantity'])}
                             {r['totalNutrients']['CHOCDF']['unit']}
