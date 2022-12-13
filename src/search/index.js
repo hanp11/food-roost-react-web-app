@@ -17,8 +17,12 @@ const SearchComponent = () => {
   const searchCriteria = paths[2];
 
   useEffect(() => {
-    dispatch(findRecipesThunk(searchCriteria));
-    setSearchText(searchCriteria);
+    if (searchCriteria) {
+      dispatch(findRecipesThunk(decodeURI(searchCriteria)));
+      setSearchText(decodeURI(searchCriteria));
+    } else {
+      setSearchText("");
+    }
   }, [dispatch, searchCriteria]);
 
   const recipeSearchHandler = () => {

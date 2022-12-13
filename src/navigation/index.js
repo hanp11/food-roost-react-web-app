@@ -14,7 +14,7 @@ const NavSidebar = () => {
   const active = paths[1];
 
   return (
-      <div className="list-group">
+      <div className="list-group mb-3">
         <div className="list-group-item">
           <img alt="food-roost-icon" height={25} src="../..//food-roost-icon.png"/>
         </div>

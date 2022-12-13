@@ -7,7 +7,7 @@ import {
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircle} from "@fortawesome/free-solid-svg-icons";
 
-const DetailsComponent = () => {
+const Details = () => {
   const {currentRecipe, recipesLoading} = useSelector(state => state.recipesData);
   const dispatch = useDispatch();
   const {pathname} = useLocation();
@@ -122,4 +122,4 @@ const DetailsComponent = () => {
   );
 };
 
-export default DetailsComponent;
+export default Details;
