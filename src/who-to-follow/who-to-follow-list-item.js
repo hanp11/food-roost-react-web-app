@@ -1,6 +1,32 @@
-import React from "react";
+import React, {useEffect} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  findFollowingThunk,
+  followUserThunk,
+  unfollowUserThunk
+} from "../services/follows-thunks";
 
 const WhoToFollowListItem = ({who}) => {
+
+  const {currentUser} = useSelector((state) => state.users);
+  const {following} = useSelector((state) => state.follows);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(findFollowingThunk(currentUser._id));
+  }, [following]);
+
+  const handleFollow = () => {
+    dispatch(followUserThunk({
+      followed: who._id
+    }))
+  }
+
+  const handleUnfollow = () => {
+    const followId = following.filter(f => f.followed._id === who._id)[0]._id;
+    dispatch(unfollowUserThunk(followId))
+  }
 
   return(
       <li className="list-group-item">
@@ -13,7 +39,9 @@ const WhoToFollowListItem = ({who}) => {
             <div className="small">{who.username}</div>
           </div>
           <div className="col-2">
-            <button className="btn btn-primary rounded-pill float-end">Follow</button>
+            {(following && following.filter(f => f.followed._id === who._id).length > 0)
+                ? <button className="btn btn-primary rounded-pill float-end" onClick={handleUnfollow}>Unfollow</button>
+                : <button className="btn btn-primary rounded-pill float-end" onClick={handleFollow}>Follow</button>}
           </div>
         </div>
       </li>

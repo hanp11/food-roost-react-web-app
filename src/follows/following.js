@@ -4,6 +4,7 @@ import {
   findFollowingThunk
 } from "../services/follows-thunks";
 import {Button, Modal} from "react-bootstrap";
+import {Link} from "react-router-dom";
 
 const Following = ({uid}) => {
   const {following} = useSelector((state) => state.follows);
@@ -21,23 +22,26 @@ const Following = ({uid}) => {
 
   return(
       <>
-        <Button variant="primary" onClick={handleShow}>
+        <Button className="text-decoration-none p-0 m-0 pb-1 pe-1" variant="link" onClick={handleShow}>
           {following.length}
         </Button>
 
         <Modal show={show} onHide={handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Modal heading</Modal.Title>
+            <Modal.Title>Following</Modal.Title>
           </Modal.Header>
-          <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-            <Button variant="primary" onClick={handleClose}>
-              Save Changes
-            </Button>
-          </Modal.Footer>
+          <Modal.Body>
+            {
+              following && following.map((follow) =>
+                <Link key={follow.followed._id} to={`/profile/${follow.followed._id}`} className="list-group-item">
+                  {follow.followed.fullName} ({follow.followed.username})
+                </Link>
+              )
+            }
+            {
+              (!following || following.length < 1) && (<span className="text-secondary small">No following</span>)
+            }
+          </Modal.Body>
         </Modal>
       </>
   )

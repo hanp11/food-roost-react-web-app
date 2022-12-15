@@ -51,7 +51,7 @@ const Register = () => {
       <h3 className="wd-page-title text-center">Register</h3>
       <div>
         <div className="form-group row mb-2">
-          <label htmlFor="formFullName" className="col-sm-2 col-form-label">Full name</label>
+          <label htmlFor="formFullName" className="col-sm-2 col-form-label">Full name <span className="text-danger">*</span></label>
           <div className="col-sm-10">
             <input className="form-control" id="formFullName"
                    placeholder="Full name" value={fullName}
@@ -93,7 +93,7 @@ const Register = () => {
           </div>
         </div>
         <div className="form-group d-flex justify-content-center mb-2">
-          <button disabled={!username || !password} type="submit" className="btn btn-primary" onClick={handleRegister}>Register</button>
+          <button disabled={!fullName || !username || !password} type="submit" className="btn btn-primary" onClick={handleRegister}>Register</button>
         </div>
       </div>
       <div className="d-flex justify-content-center">

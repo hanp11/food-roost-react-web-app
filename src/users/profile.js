@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCalendar} from "@fortawesome/free-solid-svg-icons";
 import Following from "../follows/following";
+import Followers from "../follows/followers";
 
 const Profile = () => {
   const {currentUser} = useSelector((state) => state.users);
@@ -33,11 +34,11 @@ const Profile = () => {
               </div>}
               <div className="row mt-2 mb-3">
                 {currentUser.role === 'FOODIE' && <div className="col-auto ps-0">
-                  <Following uid={currentUser.id}/>
+                  <Following uid={currentUser._id}/>
                   <span className="text-secondary">Following</span>
                 </div>}
                 {currentUser.role === 'NUTRITIONIST' && <div className="col-auto ps-0">
-                  <span className="fw-bolder pe-1">{currentUser.followers ? currentUser.followers.length : 0}</span>
+                  <Followers uid={currentUser._id}/>
                   <span className="text-secondary">Followers</span>
                 </div>}
               </div>
