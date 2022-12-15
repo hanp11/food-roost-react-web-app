@@ -7,12 +7,14 @@ import {configureStore} from "@reduxjs/toolkit";
 import {Provider} from "react-redux";
 import recipesReducer from "./reducers/edamam/recipes-reducer";
 import usersReducer from "./reducers/users-reducer";
+import followsReducer from "./reducers/follows-reducer";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const store = configureStore({
   reducer: {
     recipesData: recipesReducer,
-    users: usersReducer
+    users: usersReducer,
+    follows: followsReducer
   }
 });
 

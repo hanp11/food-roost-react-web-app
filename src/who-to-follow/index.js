@@ -1,18 +1,25 @@
-import React from "react";
-import {useSelector} from "react-redux";
+import React, {useEffect} from "react";
+import {useDispatch, useSelector} from "react-redux";
 import WhoToFollowListItem from "./who-to-follow-list-item";
 import './index.css';
+import {findAllUsersThunk} from "../services/users-thunks";
 
 const WhoToFollowList = () => {
-  const whoArray = [];//useSelector((state) => state.who);
+  const {users} = useSelector((state) => state.users);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(findAllUsersThunk());
+  }, []);
 
   return(
       <ul className="list-group">
         <li className="list-group-item">
-          <h1 className="wd-who-to-follow">Who to follow</h1>
+          <h1 className="wd-who-to-follow">Experts to follow</h1>
         </li>
         {
-          whoArray.map(who =>
+          users?.filter(who => who.role === 'NUTRITIONIST')?.map(who =>
               <WhoToFollowListItem
                   key={who._id}
                   who={who}/>

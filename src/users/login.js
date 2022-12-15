@@ -1,8 +1,9 @@
 import {useDispatch, useSelector} from "react-redux";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Navigate} from "react-router";
 import {loginThunk} from "../services/users-thunks";
 import {Link} from "react-router-dom";
+import {resetError} from "../reducers/users-reducer";
 
 const Login = () => {
   const {currentUser, error} = useSelector((state) => state.users);
@@ -11,6 +12,10 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(resetError());
+  }, []);
 
   const handleLogin = () => {
     dispatch(loginThunk({username, password}));
@@ -27,7 +32,7 @@ const Login = () => {
           </div>
         }
         <h3 className="wd-page-title text-center">Login</h3>
-        <form>
+        <div>
           <div className="form-group row mb-2">
             <label htmlFor="formUsername" className="col-sm-2 col-form-label">Username</label>
             <div className="col-sm-10">
@@ -47,7 +52,7 @@ const Login = () => {
           <div className="form-group d-flex justify-content-center mb-2">
             <button type="submit" className="btn btn-primary" onClick={handleLogin}>Log in</button>
           </div>
-        </form>
+        </div>
         <div className="d-flex justify-content-center">
           <span className="me-1">Don't have an account yet?</span>
           <Link className="text-decoration-none" to="/register">Register</Link>

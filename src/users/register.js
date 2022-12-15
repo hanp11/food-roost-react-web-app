@@ -1,8 +1,9 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {registerThunk} from "../services/users-thunks";
 import {Navigate} from "react-router";
 import {Link} from "react-router-dom";
+import {resetError} from "../reducers/users-reducer";
 
 const Role = {
   Nutritionist: 'NUTRITIONIST',
@@ -20,12 +21,19 @@ const Register = () => {
 
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(resetError());
+  }, []);
+
   const handleRegister = () => {
     dispatch(registerThunk({
       username,
       password,
       email,
       fullName,
+      following: [],
+      followers: [],
+      dateJoined: new Date(),
       role: isNutritionist ? Role.Nutritionist : Role.Foodie
     }));
   }
@@ -41,7 +49,7 @@ const Register = () => {
           </div>
       }
       <h3 className="wd-page-title text-center">Register</h3>
-      <form>
+      <div>
         <div className="form-group row mb-2">
           <label htmlFor="formFullName" className="col-sm-2 col-form-label">Full name</label>
           <div className="col-sm-10">
@@ -59,7 +67,7 @@ const Register = () => {
           </div>
         </div>
         <div className="form-group row mb-2">
-          <label htmlFor="formUsername" className="col-sm-2 col-form-label">Username</label>
+          <label htmlFor="formUsername" className="col-sm-2 col-form-label">Username <span className="text-danger">*</span></label>
           <div className="col-sm-10">
             <input className="form-control" id="formUsername"
                    placeholder="Username" value={username}
@@ -67,7 +75,7 @@ const Register = () => {
           </div>
         </div>
         <div className="form-group row mb-2">
-          <label htmlFor="formPassword" className="col-sm-2 col-form-label">Password</label>
+          <label htmlFor="formPassword" className="col-sm-2 col-form-label">Password <span className="text-danger">*</span></label>
           <div className="col-sm-10">
             <input type="password" className="form-control" id="formPassword"
                    placeholder="Password" value={password}
@@ -85,9 +93,9 @@ const Register = () => {
           </div>
         </div>
         <div className="form-group d-flex justify-content-center mb-2">
-          <button type="submit" className="btn btn-primary" onClick={handleRegister}>Register</button>
+          <button disabled={!username || !password} type="submit" className="btn btn-primary" onClick={handleRegister}>Register</button>
         </div>
-      </form>
+      </div>
       <div className="d-flex justify-content-center">
         <span className="me-1">Already have an account?</span>
         <Link className="text-decoration-none" to="/login">Log in</Link>

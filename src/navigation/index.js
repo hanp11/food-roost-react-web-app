@@ -7,8 +7,11 @@ import {
   faUser
 } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
+import {useSelector} from "react-redux";
 
 const NavSidebar = () => {
+  const {currentUser} = useSelector((state) => state.users);
+
   const {pathname} = useLocation();
   const paths = pathname.split('/')
   const active = paths[1];
@@ -16,7 +19,8 @@ const NavSidebar = () => {
   return (
       <div className="list-group mb-3">
         <div className="list-group-item">
-          <img alt="food-roost-icon" height={25} src="../..//food-roost-icon.png"/>
+          <img className="pe-1" alt="food-roost-icon" height={25} src="../..//food-roost-icon.png"/>
+          {currentUser && currentUser.fullName && <span className="d-none d-xl-inline">Welcome {currentUser.fullName}!</span>}
         </div>
         <Link to="/" className={`list-group-item ${!active && 'active'}`} title="Home">
           <FontAwesomeIcon icon={faHouse} className='pe-1' />

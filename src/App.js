@@ -31,7 +31,7 @@ function App() {
                         onClick={() => dispatch(logoutThunk())}>Log out</button>
             )}
           </div>
-          <div className="col-10 col-md-10 col-lg-7 col-xl-6">
+          <div className={`${currentUser && currentUser.role === 'FOODIE' ? "col-10 col-md-10 col-lg-7 col-xl-6" : "col"}`}>
             <Routes>
               <Route index element={<Home/>}/>
 
@@ -47,9 +47,9 @@ function App() {
               <Route path='/details/:resultId' element={<Details/>}/>
             </Routes>
           </div>
-          <div className="d-none d-lg-block col-lg-4 col-xl-4">
+          {currentUser && currentUser.role === 'FOODIE' && (<div className="d-none d-lg-block col-lg-4 col-xl-4">
             <WhoToFollowList/>
-          </div>
+          </div>)}
         </div>
       </CurrentUser>
     </BrowserRouter>
