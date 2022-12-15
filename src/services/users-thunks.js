@@ -13,24 +13,22 @@ export const findAllUsersThunk = createAsyncThunk(
 
 export const registerThunk = createAsyncThunk(
     'register',
-    async (user, { rejectedWithValue }) => {
-      const response = await register(user);
-
-      if (response.status) {
-        debugger;
-        throw rejectedWithValue("Incorrect username or password");
+    async (user, { rejectWithValue }) => {
+      try {
+        return await register(user);
+      } catch (e) {
+        return rejectWithValue(e.response.data);
       }
     }
 )
 
 export const loginThunk = createAsyncThunk(
     'login',
-    async (user, { rejectedWithValue }) => {
-      const response = await login(user);
-
-      if (response.status) {
-        debugger;
-        throw rejectedWithValue("Incorrect username or password");
+    async (user, { rejectWithValue}) => {
+      try {
+        return await login(user);
+      } catch (e) {
+        return rejectWithValue(e.response.data);
       }
     }
 )
