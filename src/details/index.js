@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useLocation} from "react-router";
 import {
@@ -20,6 +20,9 @@ import {
   userUnlikesRecipeThunk
 } from "../services/likes-thunks";
 import DetailsLikes from "./details-likes";
+import {
+  userSelectsRecipeOfTheDayThunk
+} from "../services/recipe-of-the-day-thunk";
 
 const Details = () => {
 
@@ -44,7 +47,7 @@ const Details = () => {
     if (recipes && recipes._id) {
       dispatch(findUsersThatLikeRecipeThunk(recipes._id))
     }
-    if (currentRecipe && !recipes) {
+    if (currentRecipe && (!recipes || recipes.length < 1)) {
       dispatch(createRecipesThunk({
         label: currentRecipe['recipe']?.label,
         yield: currentRecipe['recipe']['yield'],
@@ -54,7 +57,7 @@ const Details = () => {
         edamamId: uniqueIdentifier
       }))
     }
-  }, [dispatch, currentRecipe, recipes])
+  }, [dispatch, currentRecipe, recipes, uniqueIdentifier])
 
   const handleLike = () => {
     if (!currentUser) {
@@ -76,6 +79,15 @@ const Details = () => {
     }
   }
 
+  const selectRecipeOfTheDay = () => {
+    if (recipes) {
+      dispatch(userSelectsRecipeOfTheDayThunk({
+        rid: recipes._id,
+        date: new Date()
+      }))
+    }
+  }
+
   return (
       <ul className="list-group">
         {
@@ -93,6 +105,7 @@ const Details = () => {
                     <img alt="recipe" className="rounded" height={100} src={currentRecipe['recipe'].image}/>
                   </div>
                   <div className="col">
+                    {currentUser && currentUser.role === 'ADMIN' && <button className="btn btn-primary float-end" onClick={selectRecipeOfTheDay}>Select Recipe of the Day</button>}
                     <h1 className="wd-page-title">{currentRecipe['recipe']?.label}</h1>
                     {currentUser && likesUsers && likesUsers.filter(l => l.user?._id === currentUser?._id)?.length > 0
                       ? <button className="btn btn-danger" onClick={handleDislike}>

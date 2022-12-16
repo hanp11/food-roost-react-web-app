@@ -10,6 +10,7 @@ import usersReducer from "./reducers/users-reducer";
 import followsReducer from "./reducers/follows-reducer";
 import myRecipesReducer from "./reducers/recipes-reducer";
 import likesReducer from "./reducers/likes-reducer";
+import recipeOfTheDayReducer from "./reducers/recipe-of-the-day-reducer";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const store = configureStore({
@@ -18,7 +19,8 @@ const store = configureStore({
     users: usersReducer,
     follows: followsReducer,
     myRecipes: myRecipesReducer,
-    likes: likesReducer
+    likes: likesReducer,
+    recipeOfTheDay: recipeOfTheDayReducer,
   }
 });
 
