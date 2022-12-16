@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useLocation} from "react-router";
 import {
@@ -19,6 +19,7 @@ import {
   userLikesRecipeThunk,
   userUnlikesRecipeThunk
 } from "../services/likes-thunks";
+import DetailsLikes from "./details-likes";
 
 const Details = () => {
 
@@ -60,7 +61,8 @@ const Details = () => {
       navigate('/login');
     }
     if (recipes) {
-      dispatch(userLikesRecipeThunk(recipes._id))
+      dispatch(userLikesRecipeThunk(recipes._id));
+      window.location.reload();
     }
   }
 
@@ -69,7 +71,8 @@ const Details = () => {
       navigate('/login');
     }
     if (recipes) {
-      dispatch(userUnlikesRecipeThunk(recipes._id))
+      dispatch(userUnlikesRecipeThunk(recipes._id));
+      window.location.reload();
     }
   }
 
@@ -91,9 +94,12 @@ const Details = () => {
                   </div>
                   <div className="col">
                     <h1 className="wd-page-title">{currentRecipe['recipe']?.label}</h1>
-                    {likes && likes.filter(l => l.user._id === currentUser._id).length > 0
-                        ? <button className="btn btn-danger" onClick={handleDislike}><FontAwesomeIcon icon={faThumbsDown}/></button>
-                        : <button className="btn btn-success me-1" onClick={handleLike}><FontAwesomeIcon icon={faThumbsUp}/></button>}
+                    {currentUser && likes && likes.filter(l => l.user._id === currentUser._id).length > 0
+                      ? <button className="btn btn-danger" onClick={handleDislike}>
+                          <FontAwesomeIcon icon={faThumbsDown}/></button>
+                      : <button className="btn btn-success me-1" onClick={handleLike}><FontAwesomeIcon icon={faThumbsUp}/></button>
+                    }
+                    {recipes && recipes._id && <div><DetailsLikes rid={recipes._id}/><span className="text-secondary">Likes</span></div>}
                     <div className="small">{currentRecipe['recipe']['healthLabels'].join(' • ')}</div>
                   </div>
                 </div>
