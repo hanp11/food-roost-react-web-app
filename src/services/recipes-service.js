@@ -17,3 +17,9 @@ export const findAllRecipes = async () => {
   const recipes = response.data
   return recipes
 }
+
+export const findRecipeByEdamamId = async (edamamId) => {
+  const response = await api.get(`${RECIPES_API_URL}/edamamId/${edamamId}`)
+  const recipes = response.data
+  return recipes
+}

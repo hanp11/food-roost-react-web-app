@@ -9,6 +9,7 @@ import recipesReducer from "./reducers/edamam/recipes-reducer";
 import usersReducer from "./reducers/users-reducer";
 import followsReducer from "./reducers/follows-reducer";
 import myRecipesReducer from "./reducers/recipes-reducer";
+import likesReducer from "./reducers/likes-reducer";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const store = configureStore({
@@ -16,16 +17,15 @@ const store = configureStore({
     recipesData: recipesReducer,
     users: usersReducer,
     follows: followsReducer,
-    myRecipes: myRecipesReducer
+    myRecipes: myRecipesReducer,
+    likes: likesReducer
   }
 });
 
 root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </React.StrictMode>
+  <Provider store={store}>
+    <App />
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function

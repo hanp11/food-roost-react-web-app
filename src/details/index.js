@@ -11,33 +11,66 @@ import {
   faThumbsUp
 } from "@fortawesome/free-solid-svg-icons";
 import {
-  createRecipesThunk,
-  findAllRecipesThunk
+  createRecipesThunk, findRecipeByEdamamIdThunk,
 } from "../services/recipes-thunk";
+import {useNavigate} from "react-router-dom";
+import {
+  findUsersThatLikeRecipeThunk,
+  userLikesRecipeThunk,
+  userUnlikesRecipeThunk
+} from "../services/likes-thunks";
 
 const Details = () => {
+
+  const {currentUser} = useSelector((state) => state.users);
   const {currentRecipe, recipesLoading} = useSelector(state => state.recipesData);
   const {recipes} = useSelector(state => state.myRecipes);
+  const {likes} = useSelector(state => state.likes);
 
   const dispatch = useDispatch();
   const {pathname} = useLocation();
   const paths = pathname.split('/')
   const uniqueIdentifier = paths[2];
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     dispatch(findRecipeWithIdThunk(uniqueIdentifier));
+    dispatch(findRecipeByEdamamIdThunk(uniqueIdentifier));
   }, [dispatch, uniqueIdentifier]);
 
   useEffect(() => {
-    dispatch(findAllRecipesThunk());
-  }, [dispatch, currentRecipe]);
+    if (recipes && recipes._id) {
+      dispatch(findUsersThatLikeRecipeThunk(recipes._id))
+    }
+    if (currentRecipe && !recipes) {
+      dispatch(createRecipesThunk({
+        label: currentRecipe['recipe']?.label,
+        yield: currentRecipe['recipe']['yield'],
+        calories: Math.round(currentRecipe['recipe']['calories'] / currentRecipe['recipe']['yield']),
+        ingredients: currentRecipe['recipe']['ingredientLines'],
+        directionsUrl: currentRecipe['recipe']['url'],
+        edamamId: uniqueIdentifier
+      }))
+    }
+  }, [dispatch, currentRecipe, recipes])
 
   const handleLike = () => {
-
+    if (!currentUser) {
+      navigate('/login');
+    }
+    if (recipes) {
+      dispatch(userLikesRecipeThunk(recipes._id))
+    }
   }
 
   const handleDislike = () => {
-
+    if (!currentUser) {
+      navigate('/login');
+    }
+    if (recipes) {
+      dispatch(userUnlikesRecipeThunk(recipes._id))
+    }
   }
 
   return (
@@ -58,8 +91,9 @@ const Details = () => {
                   </div>
                   <div className="col">
                     <h1 className="wd-page-title">{currentRecipe['recipe']?.label}</h1>
-                    <button className="btn btn-success me-1" onClick={handleLike}><FontAwesomeIcon icon={faThumbsUp}/></button>
-                    <button className="btn btn-danger" onClick={handleDislike}><FontAwesomeIcon icon={faThumbsDown}/></button>
+                    {likes && likes.filter(l => l.user._id === currentUser._id).length > 0
+                        ? <button className="btn btn-danger" onClick={handleDislike}><FontAwesomeIcon icon={faThumbsDown}/></button>
+                        : <button className="btn btn-success me-1" onClick={handleLike}><FontAwesomeIcon icon={faThumbsUp}/></button>}
                     <div className="small">{currentRecipe['recipe']['healthLabels'].join(' • ')}</div>
                   </div>
                 </div>

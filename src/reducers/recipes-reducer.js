@@ -1,7 +1,7 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {
   createRecipesThunk,
-  findAllRecipesThunk
+  findAllRecipesThunk, findRecipeByEdamamIdThunk
 } from "../services/recipes-thunk";
 
 const myRecipesReducer = createSlice({
@@ -16,6 +16,9 @@ const myRecipesReducer = createSlice({
     [createRecipesThunk.fulfilled]: (state, {payload}) => {
       state.recipes = payload
     },
+    [findRecipeByEdamamIdThunk.fulfilled]: (state, {payload}) => {
+      state.recipes = payload
+    }
   }
 })
 
