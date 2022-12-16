@@ -3,12 +3,33 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {configureStore} from "@reduxjs/toolkit";
+import {Provider} from "react-redux";
+import recipesReducer from "./reducers/edamam/recipes-reducer";
+import usersReducer from "./reducers/users-reducer";
+import followsReducer from "./reducers/follows-reducer";
+import myRecipesReducer from "./reducers/recipes-reducer";
+import likesReducer from "./reducers/likes-reducer";
+import recipeOfTheDayReducer from "./reducers/recipe-of-the-day-reducer";
+import expertAdviceReducer from "./reducers/expert-advice-reducer";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+const store = configureStore({
+  reducer: {
+    recipesData: recipesReducer,
+    users: usersReducer,
+    follows: followsReducer,
+    myRecipes: myRecipesReducer,
+    likes: likesReducer,
+    recipeOfTheDay: recipeOfTheDayReducer,
+    expertAdvice: expertAdviceReducer,
+  }
+});
+
 root.render(
-  <React.StrictMode>
+  <Provider store={store}>
     <App />
-  </React.StrictMode>
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function
