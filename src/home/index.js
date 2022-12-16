@@ -87,7 +87,7 @@ const HomeComponent = () => {
                               <img alt="recipe" className="rounded" height={70} src={currentRecipe['recipe'].image}/>
                             </div>
                             <div className="col">
-                              <div className="fw-bold">{currentRecipe['recipe']['label']}</div>
+                              <Link to={`/details/${currentRecipe['recipe'].uri.match(`(?<=recipe_).*`)}`} className="fw-bold text-decoration-none">{currentRecipe['recipe']['label']}</Link>
                               <div className="row">
                                 <div className="col-auto">
                                   <div className="small">
