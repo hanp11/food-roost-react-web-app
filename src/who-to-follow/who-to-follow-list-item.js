@@ -15,17 +15,17 @@ const WhoToFollowListItem = ({who}) => {
 
   useEffect(() => {
     dispatch(findFollowingThunk(currentUser._id));
-  }, [following]);
+  }, []);
 
   const handleFollow = () => {
     dispatch(followUserThunk({
       followed: who._id
-    }))
+    }));
   }
 
   const handleUnfollow = () => {
     const followId = following.filter(f => f.followed._id === who._id)[0]._id;
-    dispatch(unfollowUserThunk(followId))
+    dispatch(unfollowUserThunk(followId));
   }
 
   return(

@@ -6,9 +6,15 @@ import {
 } from "../services/edamam/edamam-thunks";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircle} from "@fortawesome/free-solid-svg-icons";
+import {
+  createRecipesThunk,
+  findAllRecipesThunk
+} from "../services/recipes-thunk";
 
 const Details = () => {
   const {currentRecipe, recipesLoading} = useSelector(state => state.recipesData);
+  const {recipes} = useSelector(state => state.myRecipes);
+
   const dispatch = useDispatch();
   const {pathname} = useLocation();
   const paths = pathname.split('/')
@@ -16,7 +22,7 @@ const Details = () => {
 
   useEffect(() => {
     dispatch(findRecipeWithIdThunk(uniqueIdentifier));
-  }, [dispatch, uniqueIdentifier])
+  }, [dispatch, uniqueIdentifier]);
 
   //TODO: add rating
   return (

@@ -2,7 +2,7 @@ import {createSlice} from "@reduxjs/toolkit";
 import {
   findFollowersThunk,
   findFollowingThunk,
-  followUserThunk
+  followUserThunk, unfollowUserThunk
 } from "../services/follows-thunks";
 
 const followsReducer = createSlice({
@@ -13,7 +13,10 @@ const followsReducer = createSlice({
   },
   extraReducers: {
     [followUserThunk.fulfilled]: (state, {payload}) => {
-      state.followers.push(payload)
+      state.following = payload
+    },
+    [unfollowUserThunk.fulfilled]: (state, {payload}) => {
+      state.following = payload
     },
     [findFollowersThunk.fulfilled]: (state, {payload}) => {
       state.followers = payload
