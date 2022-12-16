@@ -5,6 +5,7 @@ import {
   followUserThunk,
   unfollowUserThunk
 } from "../services/follows-thunks";
+import {Link} from "react-router-dom";
 
 const WhoToFollowListItem = ({who}) => {
 
@@ -35,7 +36,7 @@ const WhoToFollowListItem = ({who}) => {
             <img alt="avatar-icon" className="rounded-circle" height={48} src={'/images/default_avatar.jpg'}/>
           </div>
           <div className="col-8">
-            <div className="fw-bold">{who.fullName}</div>
+            <Link to={`/profile/${who._id}`} className="fw-bold text-decoration-none">{who.fullName}</Link>
             <div className="small">{who.username}</div>
           </div>
           <div className="col-2">

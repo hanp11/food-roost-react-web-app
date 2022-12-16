@@ -38,6 +38,9 @@ export const profile = async () => {
   return response.data;
 }
 
-const updateUser = () => {}
+export const updateUser = async (updates) => {
+  const response = await api.put(`${USER_API_URL}/${updates._id}`, updates);
+  return response.data;
+}
 
 const deleteUser = () => {}

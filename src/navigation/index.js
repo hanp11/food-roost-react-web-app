@@ -26,7 +26,7 @@ const NavSidebar = () => {
           <FontAwesomeIcon icon={faHouse} className='pe-1' />
           <span className="d-none d-xl-inline">Home</span>
         </Link>
-        <Link to="/profile" className={`list-group-item ${active === 'profile' && 'active'}`} title="Profile">
+        <Link to="/profile" className={`list-group-item ${(active === 'profile' || active === 'edit-profile') && 'active'}`} title="Profile">
           <FontAwesomeIcon icon={faUser} className='pe-1' />
           <span className="d-none d-xl-inline">Profile</span>
         </Link>

@@ -12,6 +12,8 @@ import CurrentUser from "./users/current-user";
 import ProtectedRoute from "./users/protected-route";
 import {useDispatch, useSelector} from "react-redux";
 import {logoutThunk} from "./services/users-thunks";
+import EditProfile from "./users/edit-profile";
+import PublicProfile from "./users/public-profile";
 
 function App() {
   const {currentUser} = useSelector((state) => state.users);
@@ -42,6 +44,12 @@ function App() {
                   <Profile/>
                 </ProtectedRoute>
               }/>
+              <Route path="/edit-profile" element={
+                <ProtectedRoute>
+                  <EditProfile/>
+                </ProtectedRoute>
+              }/>
+              <Route path="/profile/:uid" element={<PublicProfile/>}/>
 
               <Route path='/search/*' element={<Search/>}/>
               <Route path='/details/:resultId' element={<Details/>}/>

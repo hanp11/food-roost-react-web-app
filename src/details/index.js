@@ -5,7 +5,11 @@ import {
   findRecipeWithIdThunk
 } from "../services/edamam/edamam-thunks";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCircle} from "@fortawesome/free-solid-svg-icons";
+import {
+  faCircle,
+  faThumbsDown,
+  faThumbsUp
+} from "@fortawesome/free-solid-svg-icons";
 import {
   createRecipesThunk,
   findAllRecipesThunk
@@ -24,7 +28,18 @@ const Details = () => {
     dispatch(findRecipeWithIdThunk(uniqueIdentifier));
   }, [dispatch, uniqueIdentifier]);
 
-  //TODO: add rating
+  useEffect(() => {
+    dispatch(findAllRecipesThunk());
+  }, [dispatch, currentRecipe]);
+
+  const handleLike = () => {
+
+  }
+
+  const handleDislike = () => {
+
+  }
+
   return (
       <ul className="list-group">
         {
@@ -43,6 +58,8 @@ const Details = () => {
                   </div>
                   <div className="col">
                     <h1 className="wd-page-title">{currentRecipe['recipe']?.label}</h1>
+                    <button className="btn btn-success me-1" onClick={handleLike}><FontAwesomeIcon icon={faThumbsUp}/></button>
+                    <button className="btn btn-danger" onClick={handleDislike}><FontAwesomeIcon icon={faThumbsDown}/></button>
                     <div className="small">{currentRecipe['recipe']['healthLabels'].join(' • ')}</div>
                   </div>
                 </div>
