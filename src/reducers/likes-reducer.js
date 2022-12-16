@@ -5,7 +5,8 @@ import {
 } from "../services/likes-thunks";
 
 const initialState = {
-  likes: [],
+  likesRecipes: [],
+  likesUsers: [],
   loading: false
 }
 
@@ -14,19 +15,19 @@ export const likesReducer = createSlice({
   initialState,
   extraReducers: {
     [userLikesRecipeThunk.fulfilled]: (state, {payload}) => {
-      state.likes = payload
+      state.likesRecipes = payload
     },
     [userLikesRecipeThunk.fulfilled]: (state, {payload}) => {
-      state.likes = payload
+      state.likesRecipes = payload
     },
     [findRecipesLikedByUserThunk.fulfilled]: (state, {payload}) => {
-      state.likes = payload
+      state.likesRecipes = payload
     },
     [findRecipesLikedByUserThunk.rejected]: (state) => {
-      state.likes = []
+      state.likesRecipes = []
     },
     [findUsersThatLikeRecipeThunk.fulfilled]: (state, {payload}) => {
-      state.likes = payload
+      state.likesUsers = payload
     },
   }
 })

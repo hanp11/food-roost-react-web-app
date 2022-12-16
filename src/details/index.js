@@ -26,7 +26,7 @@ const Details = () => {
   const {currentUser} = useSelector((state) => state.users);
   const {currentRecipe, recipesLoading} = useSelector(state => state.recipesData);
   const {recipes} = useSelector(state => state.myRecipes);
-  const {likes} = useSelector(state => state.likes);
+  const {likesUsers} = useSelector(state => state.likes);
 
   const dispatch = useDispatch();
   const {pathname} = useLocation();
@@ -60,7 +60,7 @@ const Details = () => {
     if (!currentUser) {
       navigate('/login');
     }
-    if (recipes) {
+    else if (recipes) {
       dispatch(userLikesRecipeThunk(recipes._id));
       window.location.reload();
     }
@@ -70,7 +70,7 @@ const Details = () => {
     if (!currentUser) {
       navigate('/login');
     }
-    if (recipes) {
+    else if (recipes) {
       dispatch(userUnlikesRecipeThunk(recipes._id));
       window.location.reload();
     }
@@ -94,7 +94,7 @@ const Details = () => {
                   </div>
                   <div className="col">
                     <h1 className="wd-page-title">{currentRecipe['recipe']?.label}</h1>
-                    {currentUser && likes && likes.filter(l => l.user._id === currentUser._id).length > 0
+                    {currentUser && likesUsers && likesUsers.filter(l => l.user?._id === currentUser?._id)?.length > 0
                       ? <button className="btn btn-danger" onClick={handleDislike}>
                           <FontAwesomeIcon icon={faThumbsDown}/></button>
                       : <button className="btn btn-success me-1" onClick={handleLike}><FontAwesomeIcon icon={faThumbsUp}/></button>

@@ -15,6 +15,7 @@ const HomeComponent = () => {
           </li>
           <li className="list-group-item">
             <h2 className="wd-page-title">Home</h2>
+            <span>Discover recipes to help you make healthy eating choices.</span>
           </li>
           <li className="list-group-item">
             <h3 className="wd-sub-heading-title">Recipe of the Day</h3>

@@ -5,7 +5,7 @@ import {Link} from "react-router-dom";
 import {findUsersThatLikeRecipeThunk} from "../services/likes-thunks";
 
 const DetailsLikes = ({rid}) => {
-  const {likes} = useSelector((state) => state.likes);
+  const {likesUsers} = useSelector((state) => state.likes);
 
   const [show, setShow] = useState(false);
 
@@ -21,7 +21,7 @@ const DetailsLikes = ({rid}) => {
   return(
       <>
         <Button className="text-decoration-none p-0 m-0 pb-1 pe-1" variant="link" onClick={handleShow}>
-          {likes.length}
+          {likesUsers.length}
         </Button>
 
         <Modal show={show} onHide={handleClose}>
@@ -30,14 +30,14 @@ const DetailsLikes = ({rid}) => {
           </Modal.Header>
           <Modal.Body>
             {
-                likes && likes.map((like) =>
+                likesUsers && likesUsers.map((like) =>
                     <Link key={like._id} to={`/profile/${like.user._id}`} className="list-group-item">
                       {like.user.fullName} ({like.user.username})
                     </Link>
                 )
             }
             {
-                (!likes || likes.length < 1) && (<span className="text-secondary small">No likes</span>)
+                (!likesUsers || likesUsers.length < 1) && (<span className="text-secondary small">No likes</span>)
             }
           </Modal.Body>
         </Modal>

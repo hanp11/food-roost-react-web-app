@@ -1,12 +1,23 @@
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCalendar} from "@fortawesome/free-solid-svg-icons";
 import Following from "../follows/following";
 import Followers from "../follows/followers";
+import React, {useEffect} from "react";
+import {findRecipesLikedByUserThunk} from "../services/likes-thunks";
 
 const Profile = () => {
   const {currentUser} = useSelector((state) => state.users);
+  const {likesRecipes} = useSelector((state) => state.likes);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (currentUser) {
+      dispatch(findRecipesLikedByUserThunk(currentUser._id));
+    }
+  }, []);
 
   return (
     <>
@@ -43,6 +54,23 @@ const Profile = () => {
                 </div>}
               </div>
             </div>
+            {likesRecipes && likesRecipes.length > 0 &&
+              <>
+                <hr/>
+                <h3 className="wd-sub-heading-title ps-3">Liked Recipes:</h3>
+                <ul className="ms-3">
+                  <li>
+                    {
+                        likesRecipes && likesRecipes.map(like =>
+                          <Link key={like._id} to={`/details/${like.recipe.edamamId}`}>
+                            {like.recipe.label}
+                          </Link>
+                      )
+                    }
+                  </li>
+                </ul>
+              </>
+            }
           </div>
         )
       }
