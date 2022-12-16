@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import './index.css';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircle, faDrumstickBite} from "@fortawesome/free-solid-svg-icons";
@@ -7,6 +7,10 @@ import {findAllRecipeOfTheDayThunk} from "../services/recipe-of-the-day-thunk";
 import {findRecipeWithIdThunk} from "../services/edamam/edamam-thunks";
 import {Link} from "react-router-dom";
 import {findRecipesLikedByUserThunk} from "../services/likes-thunks";
+import {
+  findAllExpertAdviceThunk,
+} from "../services/expert-advice-thunk";
+import {findFollowingThunk} from "../services/follows-thunks";
 
 const HomeComponent = () => {
 
@@ -14,15 +18,27 @@ const HomeComponent = () => {
   const {currentRecipe, recipesLoading} = useSelector(state => state.recipesData);
   const {recipeOfTheDay} = useSelector((state) => state.recipeOfTheDay);
   const {likesRecipes} = useSelector((state) => state.likes);
+  const {expertAdvice} = useSelector((state) => state.expertAdvice);
+  const {following} = useSelector((state) => state.follows);
+
+  const [followedUsernames, setFollowedUsernames] = useState([]);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (currentUser) {
+      dispatch(findFollowingThunk(currentUser._id));
+    }
+  }, []);
+
+  useEffect(() => {
     dispatch(findAllRecipeOfTheDayThunk())
+    dispatch(findAllExpertAdviceThunk())
     if (currentUser) {
       dispatch(findRecipesLikedByUserThunk(currentUser._id));
+      setFollowedUsernames(following.map(f => f.followed.username));
     }
-  }, [dispatch]);
+  }, [dispatch, following]);
 
   useEffect(() => {
     if (recipeOfTheDay && recipeOfTheDay.recipe) {
@@ -43,8 +59,8 @@ const HomeComponent = () => {
             <h2 className="wd-page-title">Home</h2>
             <span>Discover recipes to help you make healthy eating choices.</span>
           </li>
-          <li className="list-group-item">
-            {recipeOfTheDay && (<>
+          {recipeOfTheDay && (
+            <li className="list-group-item">
               <h3 className="wd-sub-heading-title">Recipe of the Day</h3>
               <ul className="list-group">
                 {
@@ -99,26 +115,46 @@ const HomeComponent = () => {
                     )
                 }
               </ul>
-            </>)}
-          </li>
-          <li className="list-group-item">
-            {likesRecipes && likesRecipes.length > 0 &&
-                <>
-                  <h3 className="wd-sub-heading-title">Your Recipes:</h3>
-                  <ul>
-                    <li>
-                      {
-                          likesRecipes && likesRecipes.map(like =>
-                              <Link key={like._id} to={`/details/${like.recipe.edamamId}`}>
-                                {like.recipe.label}
-                              </Link>
-                          )
-                      }
-                    </li>
-                  </ul>
-                </>
-            }
-          </li>
+          </li>)}
+          {likesRecipes && likesRecipes.length > 0 && (
+            <li className="list-group-item">
+              <h3 className="wd-sub-heading-title">Your Recipes:</h3>
+              <ul>
+                <li>
+                  {
+                      likesRecipes && likesRecipes.map(like =>
+                          <Link key={like._id} to={`/details/${like.recipe.edamamId}`}>
+                            {like.recipe.label}
+                          </Link>
+                      )
+                  }
+                </li>
+              </ul>
+            </li>
+          )}
+          {expertAdvice && expertAdvice.length > 0 && (
+            <li className="list-group-item">
+              <h3 className="wd-sub-heading-title">Expert Advice</h3>
+              {expertAdvice.filter(advice => followedUsernames.includes(advice.user.username)).map(advice =>
+                  <>
+                    <div>
+                      <Link to={`/profile/${advice.user._id}`} className="fw-bold pe-1 text-decoration-none">{advice.user.fullName} ({advice.user.username})
+                      </Link>
+                      &middot;
+                      <span className="ps-1 fw-normal text-secondary">{new Date(advice.date).toLocaleDateString("en-US", {
+                        timeZone: 'UTC',
+                        month: 'long',
+                        day: 'numeric',
+                        year: 'numeric'
+                      })}</span>
+                      <div className="mt-2 mb-2">{advice.content}</div>
+                      Recipe: <Link to={`/details/${advice.recipe.edamamId}`}>{advice.recipe.label}</Link>
+                    </div>
+                    <hr/>
+                  </>
+              )}
+            </li>
+          )}
         </ul>
       </>
   );

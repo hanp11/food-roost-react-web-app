@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useLocation} from "react-router";
 import {
@@ -23,6 +23,7 @@ import DetailsLikes from "./details-likes";
 import {
   userSelectsRecipeOfTheDayThunk
 } from "../services/recipe-of-the-day-thunk";
+import {createExpertAdviceThunk} from "../services/expert-advice-thunk";
 
 const Details = () => {
 
@@ -30,6 +31,8 @@ const Details = () => {
   const {currentRecipe, recipesLoading} = useSelector(state => state.recipesData);
   const {recipes} = useSelector(state => state.myRecipes);
   const {likesUsers} = useSelector(state => state.likes);
+
+  const [expertAdviceContent, setExpertAdviceContent] = useState("");
 
   const dispatch = useDispatch();
   const {pathname} = useLocation();
@@ -88,6 +91,16 @@ const Details = () => {
     }
   }
 
+  const handleSubmitExpertAdvice = () => {
+    if (recipes) {
+      dispatch(createExpertAdviceThunk({
+        rid: recipes._id,
+        date: new Date(),
+        content: expertAdviceContent
+      }))
+    }
+  }
+
   return (
       <ul className="list-group">
         {
@@ -98,7 +111,7 @@ const Details = () => {
         }
         {
             currentRecipe &&
-            <>
+            <div className="mb-3">
               <li className="list-group-item">
                 <div className="row">
                   <div className="col-auto">
@@ -192,7 +205,12 @@ const Details = () => {
                   <a href={currentRecipe['recipe']['url']}>{currentRecipe['recipe']['url']}</a>
                 </div>
               </li>
-            </>
+              {currentUser && currentUser.role === 'NUTRITIONIST' && <div className="form-group">
+                <label className="mt-3 wd-sub-heading-title ms-1" htmlFor="expertAdviceTextArea">Write Expert Advice: </label>
+                <textarea value={expertAdviceContent} onChange={e => setExpertAdviceContent(e.target.value)} className="form-control" id="expertAdviceTextArea" rows="3"></textarea>
+                <button onClick={handleSubmitExpertAdvice} className="btn btn-primary mt-1 float-end">Submit</button>
+              </div>}
+            </div>
         }
       </ul>
   );
