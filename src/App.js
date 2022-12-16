@@ -14,6 +14,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {logoutThunk} from "./services/users-thunks";
 import EditProfile from "./users/edit-profile";
 import PublicProfile from "./users/public-profile";
+import ExpertAdvice from "./expert-advice";
 
 function App() {
   const {currentUser} = useSelector((state) => state.users);
@@ -53,6 +54,8 @@ function App() {
 
               <Route path='/search/*' element={<Search/>}/>
               <Route path='/details/:resultId' element={<Details/>}/>
+
+              <Route path='/expert-advice' element={<ExpertAdvice/>}/>
             </Routes>
           </div>
           {currentUser && currentUser.role === 'FOODIE' && (<div className="d-none d-lg-block col-lg-4 col-xl-4">

@@ -22,6 +22,7 @@ const HomeComponent = () => {
   const {following} = useSelector((state) => state.follows);
 
   const [followedUsernames, setFollowedUsernames] = useState([]);
+  const [filteredExpertAdvice, setFilteredExpertAdvice] = useState([]);
 
   const dispatch = useDispatch();
 
@@ -39,6 +40,15 @@ const HomeComponent = () => {
       setFollowedUsernames(following.map(f => f.followed.username));
     }
   }, [dispatch, following]);
+
+  useEffect(() => {
+    if (currentUser) {
+      setFilteredExpertAdvice(expertAdvice.filter(advice => followedUsernames.includes(advice.user.username)));
+    }
+    else {
+      setFilteredExpertAdvice(expertAdvice)
+    }
+  }, [dispatch, expertAdvice]);
 
   useEffect(() => {
     if (recipeOfTheDay && recipeOfTheDay.recipe) {
@@ -132,10 +142,10 @@ const HomeComponent = () => {
               </ul>
             </li>
           )}
-          {expertAdvice && expertAdvice.length > 0 && (
+          {filteredExpertAdvice && filteredExpertAdvice.length > 0 && (
             <li className="list-group-item">
               <h3 className="wd-sub-heading-title">Expert Advice</h3>
-              {expertAdvice.filter(advice => followedUsernames.includes(advice.user.username)).map(advice =>
+              {filteredExpertAdvice.map(advice =>
                   <>
                     <div>
                       <Link to={`/profile/${advice.user._id}`} className="fw-bold pe-1 text-decoration-none">{advice.user.fullName} ({advice.user.username})
